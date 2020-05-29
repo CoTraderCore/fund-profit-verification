@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const Web3 = require('web3')
 const web3 = new Web3(process.env.INFURA)
-const _ = require('lodash')
+
 
 // get events helper
 module.exports = async (address, abi, fromBlock, eventName) => {

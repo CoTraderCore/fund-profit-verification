@@ -1,7 +1,7 @@
 const abi = require('./abi.js')
 const getEvent = require('./getEvent.js')
 const _ = require('lodash')
-
+const BigNumber = require('bignumber.js')
 
 const FUND_ADDRESS = "0xcA7abB776788D86c6acF42DE07229f9c5798E38C"
 const localDB = []
@@ -15,7 +15,8 @@ function localDBUpdateOrInsert(address, amount, type){
 
   if(searchObj.length > 0){
     // update amount
-    searchObj[0].amount = searchObj[0].amount + amount
+    let curAmount = new BigNumber(searchObj[0].amount)
+    searchObj[0].amount = curAmount.plus(amount).toString()
   }else{
     // insert
     localDB.push(
