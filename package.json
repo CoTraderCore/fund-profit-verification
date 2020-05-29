@@ -1,0 +1,25 @@
+{
+  "name": "fund-profit-verification",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoTraderCore/fund-profit-verification.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "web3": "^1.2.2",
+    "bignumber.js": "^9.0.0",
+    "dotenv": "^7.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/CoTraderCore/fund-profit-verification/issues"
+  },
+  "homepage": "https://github.com/CoTraderCore/fund-profit-verification#readme"
+}
