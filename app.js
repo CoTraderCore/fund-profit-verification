@@ -2,9 +2,12 @@ const abi = require('./abi.js')
 const getEvent = require('./getEvent.js')
 const _ = require('lodash')
 const BigNumber = require('bignumber.js')
+const util = require('util')
+const fs = require('fs')
 
 const FUND_ADDRESS = "0xcA7abB776788D86c6acF42DE07229f9c5798E38C"
 const localDB = []
+let result = []
 
 
 // events parser
@@ -92,6 +95,11 @@ function localDBUpdateOrInsert(address, amount, type){
   }
 }
 
+// TODO
+function compareBalanceFromContractAndLocalDB(){
+  return
+}
+
 // increase - redduce
 function subReduceFromIncrease(address){
   const increaseObj = localDB.filter((item) => {
@@ -116,12 +124,10 @@ function calculateTotalValueFromLocalDB(){
   localDB.forEach((item) => {
     subReduceFromIncrease(item.address)
   })
-}
 
-
-// TODO
-function compareBalanceFromContractAndLocalDB(){
-  return
+  result = localDB.filter((item) => {
+    return item.type === "Increase"
+  })
 }
 
 
@@ -129,6 +135,11 @@ function compareBalanceFromContractAndLocalDB(){
 (async function main(){
   await runEvensChecker(FUND_ADDRESS, abi.FUND_ABI)
   console.log(localDB)
+  console.log("__________________________________________________________")
   calculateTotalValueFromLocalDB()
   console.log(localDB)
+  console.log("__________________________________________________________")
+  console.log(result)
+
+  fs.writeFileSync('./data.json', JSON.stringify(result, null, 2) , 'utf-8');
 }())
