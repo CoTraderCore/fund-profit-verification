@@ -2,10 +2,9 @@ const abi = require('./abi.js')
 const getEvent = require('./getEvent.js')
 const _ = require('lodash')
 const BigNumber = require('bignumber.js')
-const util = require('util')
 const fs = require('fs')
 
-const FUND_ADDRESS = "0xcA7abB776788D86c6acF42DE07229f9c5798E38C"
+const FUND_ADDRESS = "0xB026c97a78f93b21b2aB51E00068F7E78249A657"
 const localDB = []
 let result = []
 
@@ -26,10 +25,13 @@ async function runEvensChecker(address, abi){
       `Trade event,
        src address ${eventsObj[i].returnValues[0]},
        dest address: ${eventsObj[i].returnValues[2]},
-       amount ${eventsObj[i].returnValues[1]}`
+       amountSent ${eventsObj[i].returnValues[1]},
+       amountRecieve ${eventsObj[i].returnValues[3]}
+       `
     )
-    localDBUpdateOrInsert(eventsObj[i].returnValues[0], eventsObj[i].returnValues[1], "Increase")
-    localDBUpdateOrInsert(eventsObj[i].returnValues[2], eventsObj[i].returnValues[1], "Reduce")
+    localDBUpdateOrInsert(eventsObj[i].returnValues[2], eventsObj[i].returnValues[3], "Increase")
+    localDBUpdateOrInsert(eventsObj[i].returnValues[0], eventsObj[i].returnValues[1], "Reduce")
+
     break
 
     case 'BuyPool':
@@ -134,12 +136,7 @@ function calculateTotalValueFromLocalDB(){
 // test call
 (async function main(){
   await runEvensChecker(FUND_ADDRESS, abi.FUND_ABI)
-  console.log(localDB)
-  console.log("__________________________________________________________")
   calculateTotalValueFromLocalDB()
-  console.log(localDB)
-  console.log("__________________________________________________________")
-  console.log(result)
 
   fs.writeFileSync('./data.json', JSON.stringify(result, null, 2) , 'utf-8');
 }())
