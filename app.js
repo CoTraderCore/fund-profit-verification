@@ -20,6 +20,26 @@ async function runEvensChecker(address, abi){
   const EventName = eventsObj[i].event
 
   switch(EventName){
+    case 'Deposit':
+    console.log(
+      `Deposit event,
+       amount ${eventsObj[i].returnValues[1]}`
+    )
+
+    // TODO increase localDB (ETH or USD dependse of fund type)
+    break
+
+    case 'Withdraw':
+    console.log(
+      `Withdraw event,
+       cut share ${eventsObj[i].returnValues[1]}
+       total share ${eventsObj[i].returnValues[2]}`
+    )
+
+    // TODO cut share from all assets in DB
+    // Loop all assets in local DB
+    break
+
     case 'Trade':
     console.log(
       `Trade event,
