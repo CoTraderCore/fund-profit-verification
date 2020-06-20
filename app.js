@@ -1,17 +1,22 @@
+require('dotenv').config()
+const Web3 = require('web3')
+const web3 = new Web3(process.env.INFURA)
+
 const abi = require('./abi.js')
 const getEvent = require('./getEvent.js')
 const _ = require('lodash')
 const BigNumber = require('bignumber.js')
 const fs = require('fs')
-
-const FUND_ADDRESS = "0xB026c97a78f93b21b2aB51E00068F7E78249A657"
+const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+const FUND_ADDRESS = "0xee169d57Bb0EAA8a5cb4a13862BF45Cd695F47E1"
 const localDB = []
 let result = []
 
+const fund = new web3.eth.Contract(abi.FUND_ABI, FUND_ADDRESS)
 
 // events parser
 async function runEvensChecker(address, abi){
-  let eventsObj = await getEvent(address, abi, 0, 'allEvents')
+  let eventsObj = await getEvent(address, abi, 0, 'allEvents', web3)
 
   // Check if some events in case happen for this fund address
   if(!_.isEmpty(eventsObj)){
@@ -25,8 +30,7 @@ async function runEvensChecker(address, abi){
       `Deposit event,
        amount ${eventsObj[i].returnValues[1]}`
     )
-
-    // TODO increase localDB (ETH or USD dependse of fund type)
+    localDBUpdateOrInsert(ETH_ADDRESS, eventsObj[i].returnValues[1], "Increase")
     break
 
     case 'Withdraw':
@@ -36,8 +40,7 @@ async function runEvensChecker(address, abi){
        total share ${eventsObj[i].returnValues[2]}`
     )
 
-    // TODO cut share from all assets in DB
-    // Loop all assets in local DB
+    subWithdraw(eventsObj[i].returnValues[1], eventsObj[i].returnValues[2])
     break
 
     case 'Trade':
@@ -122,7 +125,22 @@ function compareBalanceFromContractAndLocalDB(){
   return
 }
 
-// increase - redduce
+
+// sub withdraw share from each asset in DB
+async function subWithdraw(cutShare, removedShare){
+  let TOTAL_SHARES = new BigNumber(cutShare).plus(removedShare)
+
+  localDB.forEach((item) => {
+    let amount = new BigNumber(item.amount)
+    item.amount = BigNumber(amount.minus(amount.multipliedBy(cutShare).dividedBy(TOTAL_SHARES))).toString()
+  })
+
+  console.log(localDB)
+}
+
+
+
+// increase (Buy tokens) - redduce (Sell tokens)
 function subReduceFromIncrease(address){
   const increaseObj = localDB.filter((item) => {
     return item.address === address && item.type === "Increase"

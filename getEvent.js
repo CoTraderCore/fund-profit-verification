@@ -1,11 +1,5 @@
-require('dotenv').config()
-
-const Web3 = require('web3')
-const web3 = new Web3(process.env.INFURA)
-
-
 // get events helper
-module.exports = async (address, abi, fromBlock, eventName) => {
+module.exports = async (address, abi, fromBlock, eventName, web3) => {
 const isAddress =	web3.utils.isAddress(address)
 if(isAddress){
 const contract = new web3.eth.Contract(abi, address)
