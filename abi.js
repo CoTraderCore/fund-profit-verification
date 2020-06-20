@@ -43,7 +43,17 @@ exports.FUND_ABI = [
 			},
 			{
 				"internalType": "address",
+				"name": "_permittedStables",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
 				"name": "_poolPortalAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_stableCoinAddress",
 				"type": "address"
 			},
 			{
@@ -96,13 +106,37 @@ exports.FUND_ABI = [
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "poolToken",
+				"name": "poolAddress",
 				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "poolAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "firstConnectorAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "secondConnectorAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "firstConnectorBalance",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "secondConnectorBalance",
 				"type": "uint256"
 			}
 		],
@@ -146,13 +180,25 @@ exports.FUND_ABI = [
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "token",
+				"name": "tokenAddress",
 				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "tokenAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "underlyingAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "underlyingAmount",
 				"type": "uint256"
 			}
 		],
@@ -184,13 +230,25 @@ exports.FUND_ABI = [
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "token",
+				"name": "tokenAddress",
 				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "tokenAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "underlyingAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "underlyingAmount",
 				"type": "uint256"
 			}
 		],
@@ -203,13 +261,37 @@ exports.FUND_ABI = [
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "poolToken",
+				"name": "poolAddress",
 				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "poolAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "firstConnectorAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "secondConnectorAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "firstConnectorBalance",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "secondConnectorBalance",
 				"type": "uint256"
 			}
 		],
@@ -590,6 +672,19 @@ exports.FUND_ABI = [
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "_stableCoinAddress",
+				"type": "address"
+			}
+		],
+		"name": "changeStableCoinAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256",
 				"name": "_amount",
 				"type": "uint256"
@@ -663,7 +758,13 @@ exports.FUND_ABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "depositAmount",
+				"type": "uint256"
+			}
+		],
 		"name": "deposit",
 		"outputs": [
 			{
@@ -672,7 +773,7 @@ exports.FUND_ABI = [
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "payable",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -910,6 +1011,19 @@ exports.FUND_ABI = [
 	},
 	{
 		"inputs": [],
+		"name": "permittedStables",
+		"outputs": [
+			{
+				"internalType": "contract PermittedStablesInterface",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "platformAddress",
 		"outputs": [
 			{
@@ -1081,6 +1195,19 @@ exports.FUND_ABI = [
 		"name": "setWhitelistOnly",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "stableCoinAddress",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{

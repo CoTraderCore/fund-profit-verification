@@ -16,6 +16,13 @@ const fund = new web3.eth.Contract(abi.FUND_ABI, FUND_ADDRESS)
 
 // events parser
 async function runEvensChecker(address, abi){
+  let fundAsset
+  try{
+    fundAsset = await fund.methods.stableCoinAddress().call()
+  }catch(e){
+    fundAsset = ETH_ADDRESS
+  }
+
   let eventsObj = await getEvent(address, abi, 0, 'allEvents', web3)
 
   // Check if some events in case happen for this fund address
@@ -30,7 +37,7 @@ async function runEvensChecker(address, abi){
       `Deposit event,
        amount ${eventsObj[i].returnValues[1]}`
     )
-    localDBUpdateOrInsert(ETH_ADDRESS, eventsObj[i].returnValues[1], "Increase")
+    localDBUpdateOrInsert(fundAsset, eventsObj[i].returnValues[1], "Increase")
     break
 
     case 'Withdraw':
@@ -134,8 +141,6 @@ async function subWithdraw(cutShare, removedShare){
     let amount = new BigNumber(item.amount)
     item.amount = BigNumber(amount.minus(amount.multipliedBy(cutShare).dividedBy(TOTAL_SHARES))).toString()
   })
-
-  console.log(localDB)
 }
 
 
