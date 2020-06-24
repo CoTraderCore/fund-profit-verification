@@ -1,3 +1,4 @@
+// USD based fund 
 exports.FUND_ABI = [
 	{
 		"inputs": [
@@ -117,27 +118,15 @@ exports.FUND_ABI = [
 			},
 			{
 				"indexed": false,
-				"internalType": "address",
-				"name": "firstConnectorAddress",
-				"type": "address"
+				"internalType": "address[]",
+				"name": "connectorsAddress",
+				"type": "address[]"
 			},
 			{
 				"indexed": false,
-				"internalType": "address",
-				"name": "secondConnectorAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "firstConnectorBalance",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "secondConnectorBalance",
-				"type": "uint256"
+				"internalType": "uint256[]",
+				"name": "connectorsAmount",
+				"type": "uint256[]"
 			}
 		],
 		"name": "BuyPool",
@@ -272,27 +261,15 @@ exports.FUND_ABI = [
 			},
 			{
 				"indexed": false,
-				"internalType": "address",
-				"name": "firstConnectorAddress",
-				"type": "address"
+				"internalType": "address[]",
+				"name": "connectorsAddress",
+				"type": "address[]"
 			},
 			{
 				"indexed": false,
-				"internalType": "address",
-				"name": "secondConnectorAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "firstConnectorBalance",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "secondConnectorBalance",
-				"type": "uint256"
+				"internalType": "uint256[]",
+				"name": "connectorsAmount",
+				"type": "uint256[]"
 			}
 		],
 		"name": "SellPool",

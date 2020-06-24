@@ -8,7 +8,7 @@ const _ = require('lodash')
 const BigNumber = require('bignumber.js')
 const fs = require('fs')
 const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-const FUND_ADDRESS = "0xee169d57Bb0EAA8a5cb4a13862BF45Cd695F47E1"
+const FUND_ADDRESS = "0xde61a80D3FBf52e23A4569bB737Fc9b42d747f8B"
 const localDB = []
 
 const fund = new web3.eth.Contract(abi.FUND_ABI, FUND_ADDRESS)
@@ -67,14 +67,18 @@ async function runEvensChecker(address, abi){
       `Buy pool event,
        pool address ${eventsObj[i].returnValues[0]},
        pool amount ${eventsObj[i].returnValues[1]},
-       first connector address ${eventsObj[i].returnValues[2]},
-       second connector address ${eventsObj[i].returnValues[3]},
-       first connector balance ${eventsObj[i].returnValues[4]},
-       second connector balance ${eventsObj[i].returnValues[5]}
+       connectorsAddress ${eventsObj[i].returnValues[2]},
+       connectorsAmount${eventsObj[i].returnValues[3]}
        `)
+
+    // increase pool
     insertOrIncreaseTokenValue(eventsObj[i].returnValues[0], eventsObj[i].returnValues[1])
-    reduceTokenValue(eventsObj[i].returnValues[2], eventsObj[i].returnValues[4])
-    reduceTokenValue(eventsObj[i].returnValues[3], eventsObj[i].returnValues[5])
+    // reduce connectors
+    const connectorsAddress = eventsObj[i].returnValues[2] // JSON PARSE ???
+    const connectorsAmount = eventsObj[i].returnValues[3] // JSON PARSE ???
+    for(let i = 0; i < connectorsAddress.length; i++){
+      reduceTokenValue(connectorsAddress[i], connectorsAmount[i])
+    }
     break
 
     case 'SellPool':
@@ -82,14 +86,18 @@ async function runEvensChecker(address, abi){
       `Buy pool event,
        pool address ${eventsObj[i].returnValues[0]},
        pool amount ${eventsObj[i].returnValues[1]},
-       first connector address ${eventsObj[i].returnValues[2]},
-       second connector address ${eventsObj[i].returnValues[3]},
-       first connector balance ${eventsObj[i].returnValues[4]},
-       second connector balance ${eventsObj[i].returnValues[5]}
+       connectorsAddress ${eventsObj[i].returnValues[2]},
+       connectorsAmount${eventsObj[i].returnValues[3]}
        `)
+
+    // increase connectors
+    const connectorsAddress = eventsObj[i].returnValues[2] // JSON PARSE ???
+    const connectorsAmount = eventsObj[i].returnValues[3] // JSON PARSE ???
+    for(let i = 0; i < connectorsAddress.length; i++){
+      insertOrIncreaseTokenValue(connectorsAddress[i], connectorsAmount[i])
+    }
+    // reduce pool
     reduceTokenValue(eventsObj[i].returnValues[0], eventsObj[i].returnValues[1])
-    insertOrIncreaseTokenValue(eventsObj[i].returnValues[2], eventsObj[i].returnValues[4])
-    insertOrIncreaseTokenValue(eventsObj[i].returnValues[3], eventsObj[i].returnValues[5])
     break
 
     case 'Loan':
@@ -141,7 +149,7 @@ function insertOrIncreaseTokenValue(address, amount) {
 }
 
 
-// Sub amoun from a certain token address
+// sub amount from a certain token address
 function reduceTokenValue(address, amount) {
   const searchObj = localDB.filter((item) => {
     return item.address === address
