@@ -8,10 +8,13 @@ const _ = require('lodash')
 const BigNumber = require('bignumber.js')
 const fs = require('fs')
 const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-const FUND_ADDRESS = "0xde61a80D3FBf52e23A4569bB737Fc9b42d747f8B"
+const FUND_ADDRESS = "0x95a93EDFDFb83ecAa3D8e84e0dcf3AaC89458A8F"
 const localDB = []
 
 const fund = new web3.eth.Contract(abi.FUND_ABI, FUND_ADDRESS)
+
+let connectorsAddress
+let connectorsAmount
 
 // events parser
 async function runEvensChecker(address, abi){
@@ -74,8 +77,8 @@ async function runEvensChecker(address, abi){
     // increase pool
     insertOrIncreaseTokenValue(eventsObj[i].returnValues[0], eventsObj[i].returnValues[1])
     // reduce connectors
-    const connectorsAddress = eventsObj[i].returnValues[2] // JSON PARSE ???
-    const connectorsAmount = eventsObj[i].returnValues[3] // JSON PARSE ???
+    connectorsAddress = eventsObj[i].returnValues[2] // JSON PARSE ???
+    connectorsAmount = eventsObj[i].returnValues[3] // JSON PARSE ???
     for(let i = 0; i < connectorsAddress.length; i++){
       reduceTokenValue(connectorsAddress[i], connectorsAmount[i])
     }
@@ -91,8 +94,8 @@ async function runEvensChecker(address, abi){
        `)
 
     // increase connectors
-    const connectorsAddress = eventsObj[i].returnValues[2] // JSON PARSE ???
-    const connectorsAmount = eventsObj[i].returnValues[3] // JSON PARSE ???
+    connectorsAddress = eventsObj[i].returnValues[2] // JSON PARSE ???
+    connectorsAmount = eventsObj[i].returnValues[3] // JSON PARSE ???
     for(let i = 0; i < connectorsAddress.length; i++){
       insertOrIncreaseTokenValue(connectorsAddress[i], connectorsAmount[i])
     }

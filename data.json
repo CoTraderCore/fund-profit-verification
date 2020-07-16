@@ -1,30 +1,18 @@
 [
   {
     "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-    "amount": "1194950000000000000"
+    "amount": "0"
   },
   {
     "address": "0x2f5Cc2E9353feB3cBe32d3ab1DED9e469fAD88C4",
-    "amount": "1461555651874237270"
+    "amount": "435498570283030727"
   },
   {
-    "address": "0x6CE27497A64fFFb5517AA4aeE908b1E7EB63B9fF",
-    "amount": "9803877.5"
+    "address": "0xc74bE418ADf788a04dB7d23E3916f332B74A9617",
+    "amount": "60521950618249"
   },
   {
-    "address": "0x722dd3F80BAC40c951b51BdD28Dd19d435762180",
-    "amount": "3558228307724415091"
-  },
-  {
-    "address": "0x62bd9D98d4E188e281D7B78e29334969bbE1053c",
-    "amount": "184909365961332800"
-  },
-  {
-    "address": "0x85B24b3517E3aC7bf72a14516160541A60cFF19d",
-    "amount": "32941242308.5"
-  },
-  {
-    "address": "0xe1C634F55debc241C83A177A793E0bD25030aa7C",
-    "amount": "24767865218444312273"
+    "address": "0x0b9848d982E9Fa1af2275443a02b3a5269D3Ef4b",
+    "amount": "100000000000111"
   }
 ]
