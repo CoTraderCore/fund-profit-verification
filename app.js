@@ -8,7 +8,7 @@ const _ = require('lodash')
 const BigNumber = require('bignumber.js')
 const fs = require('fs')
 const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-const FUND_ADDRESS = "0x95a93EDFDFb83ecAa3D8e84e0dcf3AaC89458A8F"
+const FUND_ADDRESS = "0x51a030f736C6bA1a2091A92F60CD6604114072d1"
 const localDB = []
 
 const fund = new web3.eth.Contract(abi.FUND_ABI, FUND_ADDRESS)
@@ -86,7 +86,7 @@ async function runEvensChecker(address, abi){
 
     case 'SellPool':
     console.log(
-      `Buy pool event,
+      `Sell pool event,
        pool address ${eventsObj[i].returnValues[0]},
        pool amount ${eventsObj[i].returnValues[1]},
        connectorsAddress ${eventsObj[i].returnValues[2]},
@@ -116,9 +116,9 @@ async function runEvensChecker(address, abi){
     reduceTokenValue(eventsObj[i].returnValues[2], eventsObj[i].returnValues[3])
     break
 
-    case 'Reedem':
+    case 'Redeem':
     console.log(
-      `Loan event,
+      `Reedem event,
        CToken address ${eventsObj[i].returnValues[0]},
        CToken amount ${eventsObj[i].returnValues[1]},
        token address ${eventsObj[i].returnValues[2]},

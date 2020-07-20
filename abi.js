@@ -1,4 +1,4 @@
-// USD based fund 
+// USD based fund
 exports.FUND_ABI = [
 	{
 		"inputs": [
@@ -520,6 +520,11 @@ exports.FUND_ABI = [
 				"internalType": "contract IERC20",
 				"name": "_poolToken",
 				"type": "address"
+			},
+			{
+				"internalType": "bytes32[]",
+				"name": "_additionalArgs",
+				"type": "bytes32[]"
 			}
 		],
 		"name": "buyPool",
@@ -1097,6 +1102,11 @@ exports.FUND_ABI = [
 				"internalType": "contract IERC20",
 				"name": "_poolToken",
 				"type": "address"
+			},
+			{
+				"internalType": "bytes32[]",
+				"name": "_additionalArgs",
+				"type": "bytes32[]"
 			}
 		],
 		"name": "sellPool",
