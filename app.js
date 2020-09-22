@@ -8,7 +8,7 @@ const _ = require('lodash')
 const BigNumber = require('bignumber.js')
 const fs = require('fs')
 const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-const FUND_ADDRESS = "0x51a030f736C6bA1a2091A92F60CD6604114072d1"
+const FUND_ADDRESS = "0x5B20DBc8EA4c5142EC13375912F4dAd15b6047F0"
 const localDB = []
 
 const fund = new web3.eth.Contract(abi.FUND_ABI, FUND_ADDRESS)
@@ -127,6 +127,39 @@ async function runEvensChecker(address, abi){
 
     reduceTokenValue(eventsObj[i].returnValues[0], eventsObj[i].returnValues[1])
     insertOrIncreaseTokenValue(eventsObj[i].returnValues[2], eventsObj[i].returnValues[3])
+    break
+
+
+    case 'DefiCall':
+     if(eventsObj[i].returnValues[0] === "YEARN_DEPOSIT"){
+       console.log(
+         `YEARN_DEPOSIT event,
+         tokensToSend ${eventsObj[i].returnValues[1][0]},
+         amountsToSend ${eventsObj[i].returnValues[2][0]},
+         tokensToReceive ${eventsObj[i].returnValues[3][0]},
+         amountsToReceive ${eventsObj[i].returnValues[4][0]}
+         `
+       )
+
+       reduceTokenValue(eventsObj[i].returnValues[0][0], eventsObj[i].returnValues[1][0])
+       insertOrIncreaseTokenValue(eventsObj[i].returnValues[2][0], eventsObj[i].returnValues[3][0])
+     }
+     else if(eventsObj[i].returnValues[0] === "YEARN_WITHDRAW"){
+       console.log(
+         `YEARN_WITHDRAW event,
+         tokensToSend ${eventsObj[i].returnValues[1][0]},
+         amountsToSend ${eventsObj[i].returnValues[2][0]},
+         tokensToReceive ${eventsObj[i].returnValues[3][0]},
+         amountsToReceive ${eventsObj[i].returnValues[4][0]}
+         `
+       )
+
+       reduceTokenValue(eventsObj[i].returnValues[0][0], eventsObj[i].returnValues[1][0])
+       insertOrIncreaseTokenValue(eventsObj[i].returnValues[2][0], eventsObj[i].returnValues[3][0])
+     }
+     else{
+       console.error("UNKNOWN DEFI EVENT")
+     }
     break
     }
    }

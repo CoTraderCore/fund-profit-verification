@@ -1,4 +1,4 @@
-// USD based fund
+// ERC20 based fund
 exports.FUND_ABI = [
 	{
 		"inputs": [
@@ -18,11 +18,6 @@ exports.FUND_ABI = [
 				"type": "uint256"
 			},
 			{
-				"internalType": "uint256",
-				"name": "_platformFee",
-				"type": "uint256"
-			},
-			{
 				"internalType": "address",
 				"name": "_platformAddress",
 				"type": "address"
@@ -34,43 +29,28 @@ exports.FUND_ABI = [
 			},
 			{
 				"internalType": "address",
-				"name": "_permittedExchangesAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "_permittedPoolsAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "_permittedStables",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
 				"name": "_poolPortalAddress",
 				"type": "address"
 			},
 			{
 				"internalType": "address",
-				"name": "_stableCoinAddress",
+				"name": "_defiPortal",
 				"type": "address"
 			},
 			{
 				"internalType": "address",
-				"name": "_convertPortalAddress",
+				"name": "_permittedAddresses",
 				"type": "address"
 			},
 			{
 				"internalType": "address",
-				"name": "_cEther",
+				"name": "_coinAddress",
 				"type": "address"
 			},
 			{
-				"internalType": "address",
-				"name": "_permittedConvertsAddress",
-				"type": "address"
+				"internalType": "bool",
+				"name": "_isRequireTradeVerification",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -136,6 +116,43 @@ exports.FUND_ABI = [
 		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "eventType",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address[]",
+				"name": "tokensToSend",
+				"type": "address[]"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256[]",
+				"name": "amountsToSend",
+				"type": "uint256[]"
+			},
+			{
+				"indexed": false,
+				"internalType": "address[]",
+				"name": "tokensToReceive",
+				"type": "address[]"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256[]",
+				"name": "amountsToReceive",
+				"type": "uint256[]"
+			}
+		],
+		"name": "DefiCall",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
 				"indexed": true,
 				"internalType": "address",
 				"name": "user",
@@ -167,37 +184,6 @@ exports.FUND_ABI = [
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "tokenAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenAmount",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "underlyingAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "underlyingAmount",
-				"type": "uint256"
-			}
-		],
-		"name": "Loan",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
 				"indexed": true,
 				"internalType": "address",
 				"name": "previousOwner",
@@ -211,37 +197,6 @@ exports.FUND_ABI = [
 			}
 		],
 		"name": "OwnershipTransferred",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "tokenAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenAmount",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "underlyingAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "underlyingAmount",
-				"type": "uint256"
-			}
-		],
-		"name": "Redeem",
 		"type": "event"
 	},
 	{
@@ -517,32 +472,34 @@ exports.FUND_ABI = [
 				"type": "uint256"
 			},
 			{
-				"internalType": "contract IERC20",
+				"internalType": "address",
 				"name": "_poolToken",
 				"type": "address"
+			},
+			{
+				"internalType": "address[]",
+				"name": "_connectorsAddress",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "_connectorsAmount",
+				"type": "uint256[]"
 			},
 			{
 				"internalType": "bytes32[]",
 				"name": "_additionalArgs",
 				"type": "bytes32[]"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_additionData",
+				"type": "bytes"
 			}
 		],
 		"name": "buyPool",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "cEther",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -654,63 +611,42 @@ exports.FUND_ABI = [
 	{
 		"inputs": [
 			{
+				"internalType": "address[]",
+				"name": "tokensToSend",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "amountsToSend",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "bytes32[]",
+				"name": "_additionalArgs",
+				"type": "bytes32[]"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_additionalData",
+				"type": "bytes"
+			}
+		],
+		"name": "callDefiPortal",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
-				"name": "_stableCoinAddress",
+				"name": "_coinAddress",
 				"type": "address"
 			}
 		],
 		"name": "changeStableCoinAddress",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "_cToken",
-				"type": "address"
-			}
-		],
-		"name": "compoundMint",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_percent",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "_cToken",
-				"type": "address"
-			}
-		],
-		"name": "compoundRedeemByPercent",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "convertPortal",
-		"outputs": [
-			{
-				"internalType": "contract ConvertPortalInterface",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -734,6 +670,19 @@ exports.FUND_ABI = [
 				"internalType": "uint8",
 				"name": "",
 				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "defiPortal",
+		"outputs": [
+			{
+				"internalType": "contract DefiPortalInterface",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -798,13 +747,7 @@ exports.FUND_ABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "bool",
-				"name": "_convert",
-				"type": "bool"
-			}
-		],
+		"inputs": [],
 		"name": "fundManagerWithdraw",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -843,39 +786,6 @@ exports.FUND_ABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "getSmartFundData",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "_owner",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_totalShares",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address[]",
-				"name": "_tokenAddresses",
-				"type": "address[]"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_successFee",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "contract IERC20",
@@ -895,14 +805,34 @@ exports.FUND_ABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [
+		"inputs": [],
+		"name": "isLightFund",
+		"outputs": [
 			{
-				"internalType": "address",
+				"internalType": "bool",
 				"name": "",
-				"type": "address"
+				"type": "bool"
 			}
 		],
-		"name": "isRelay",
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "isRequireTradeVerification",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "isStableCoinBasedFund",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -954,49 +884,10 @@ exports.FUND_ABI = [
 	},
 	{
 		"inputs": [],
-		"name": "permittedConverts",
+		"name": "permittedAddresses",
 		"outputs": [
 			{
-				"internalType": "contract PermittedConvertsInterface",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "permittedExchanges",
-		"outputs": [
-			{
-				"internalType": "contract PermittedExchangesInterface",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "permittedPools",
-		"outputs": [
-			{
-				"internalType": "contract PermittedPoolsInterface",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "permittedStables",
-		"outputs": [
-			{
-				"internalType": "contract PermittedStablesInterface",
+				"internalType": "contract PermittedAddressesInterface",
 				"name": "",
 				"type": "address"
 			}
@@ -1107,6 +998,11 @@ exports.FUND_ABI = [
 				"internalType": "bytes32[]",
 				"name": "_additionalArgs",
 				"type": "bytes32[]"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_additionData",
+				"type": "bytes"
 			}
 		],
 		"name": "sellPool",
@@ -1118,11 +1014,11 @@ exports.FUND_ABI = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_newConvertPortalAddress",
+				"name": "_newDefiPortalAddress",
 				"type": "address"
 			}
 		],
-		"name": "setNewConvertPortal",
+		"name": "setNewDefiPortal",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -1182,19 +1078,6 @@ exports.FUND_ABI = [
 		"name": "setWhitelistOnly",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "stableCoinAddress",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -1337,8 +1220,13 @@ exports.FUND_ABI = [
 			},
 			{
 				"internalType": "bytes32[]",
-				"name": "_additionalArgs",
+				"name": "_proof",
 				"type": "bytes32[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "_positions",
+				"type": "uint256[]"
 			},
 			{
 				"internalType": "bytes",
@@ -1460,11 +1348,6 @@ exports.FUND_ABI = [
 				"internalType": "uint256",
 				"name": "_percentageWithdraw",
 				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "_convert",
-				"type": "bool"
 			}
 		],
 		"name": "withdraw",
