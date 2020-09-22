@@ -8,7 +8,7 @@ const _ = require('lodash')
 const BigNumber = require('bignumber.js')
 const fs = require('fs')
 const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-const FUND_ADDRESS = "0x5B20DBc8EA4c5142EC13375912F4dAd15b6047F0"
+const FUND_ADDRESS = "0xc165CcBe1F1Ac0FfE4d177156db5f4CAC51c0349"
 const localDB = []
 
 const fund = new web3.eth.Contract(abi.FUND_ABI, FUND_ADDRESS)
@@ -141,8 +141,8 @@ async function runEvensChecker(address, abi){
          `
        )
 
-       reduceTokenValue(eventsObj[i].returnValues[0][0], eventsObj[i].returnValues[1][0])
-       insertOrIncreaseTokenValue(eventsObj[i].returnValues[2][0], eventsObj[i].returnValues[3][0])
+       reduceTokenValue(eventsObj[i].returnValues[1][0], eventsObj[i].returnValues[2][0])
+       insertOrIncreaseTokenValue(eventsObj[i].returnValues[3][0], eventsObj[i].returnValues[4][0])
      }
      else if(eventsObj[i].returnValues[0] === "YEARN_WITHDRAW"){
        console.log(
@@ -154,8 +154,8 @@ async function runEvensChecker(address, abi){
          `
        )
 
-       reduceTokenValue(eventsObj[i].returnValues[0][0], eventsObj[i].returnValues[1][0])
-       insertOrIncreaseTokenValue(eventsObj[i].returnValues[2][0], eventsObj[i].returnValues[3][0])
+       reduceTokenValue(eventsObj[i].returnValues[1][0], eventsObj[i].returnValues[2][0])
+       insertOrIncreaseTokenValue(eventsObj[i].returnValues[3][0], eventsObj[i].returnValues[4][0])
      }
      else{
        console.error("UNKNOWN DEFI EVENT")
