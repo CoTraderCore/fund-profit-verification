@@ -5,10 +5,26 @@
   },
   {
     "address": "0x420b89636F9C932C8ab3524483A0AeEc112f3Dbe",
-    "amount": "56054383703376669"
+    "amount": "0"
   },
   {
     "address": "0x37Cb6dCB70Cd1Be2Af3146c73bc6Ba74eEFaDeda",
-    "amount": "20000000000000000"
+    "amount": "0"
+  },
+  {
+    "address": "0x850f56419c669d7363756280f01daC254c0185F3",
+    "amount": "0"
+  },
+  {
+    "address": "0x6654C44Dfa7c10Ff62f6F726a32549E88909e8f9",
+    "amount": "0"
+  },
+  {
+    "address": "0x7050C8C5f673bF36637c35c135B47F10593B206C",
+    "amount": "0"
+  },
+  {
+    "address": "0xdb9F55E2Adf926Fa6ccdf8eCC5fD0F2cca2Dc41e",
+    "amount": "0"
   }
 ]

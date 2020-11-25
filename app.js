@@ -8,7 +8,7 @@ const _ = require('lodash')
 const BigNumber = require('bignumber.js')
 const fs = require('fs')
 const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-const FUND_ADDRESS = "0xc165CcBe1F1Ac0FfE4d177156db5f4CAC51c0349"
+const FUND_ADDRESS = "0xdfC8066De0dA1392C264c1a26d3328f386652A21"
 const localDB = []
 
 const fund = new web3.eth.Contract(abi.FUND_ABI, FUND_ADDRESS)
@@ -175,7 +175,7 @@ function insertOrIncreaseTokenValue(address, amount) {
   if(searchObj.length > 0){
     // update amount
     let curAmount = new BigNumber(searchObj[0].amount)
-    searchObj[0].amount = curAmount.plus(amount).toString()
+    searchObj[0].amount = curAmount.plus(amount).toString(10)
   }else{
     // insert
     localDB.push(
@@ -194,7 +194,7 @@ function reduceTokenValue(address, amount) {
   if(searchObj.length > 0){
     // update amount
     let curAmount = new BigNumber(searchObj[0].amount)
-    searchObj[0].amount = curAmount.minus(amount).toString()
+    searchObj[0].amount = curAmount.minus(amount).toString(10)
   }
 }
 
@@ -206,7 +206,7 @@ async function subWithdraw(cutShare, removedShare){
 
   localDB.forEach((item) => {
     let amount = new BigNumber(item.amount)
-    item.amount = BigNumber(amount.minus(amount.multipliedBy(cutShare).dividedBy(TOTAL_SHARES))).toString()
+    item.amount = BigNumber(amount.minus(amount.multipliedBy(cutShare).dividedBy(TOTAL_SHARES))).toString(10)
   })
 }
 
